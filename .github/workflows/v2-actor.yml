@@ -1,0 +1,42 @@
+name: V2 archive actor pilot
+on:
+  push:
+    branches: [v2-archive-permission-pilot]
+permissions:
+  contents: write
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prove branch rules with the actual Actions token
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        shell: python
+        run: |
+          import json, os, urllib.request, urllib.error
+          base = 'https://api.github.com/repos/' + os.environ['REPOSITORY']
+          def request(path, method='GET', data=None, denied=False):
+              req = urllib.request.Request(base + path, data=json.dumps(data).encode() if data is not None else None,
+                  method=method, headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'], 'Accept':'application/vnd.github+json'})
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as response:
+                      raw=response.read()
+                      value=json.loads(raw) if raw else None
+              except urllib.error.HTTPError as error:
+                  body=error.read().decode()
+                  if denied and error.code in (403,422) and ('rule' in body.lower() or 'protected' in body.lower()):
+                      print('Expected protection denial:', method, path)
+                      return
+                  raise RuntimeError(str(error.code)+': '+body)
+              if denied: raise RuntimeError('Protected mutation unexpectedly succeeded: '+path)
+              return value
+          head=request('/git/ref/heads/v2-protected-archive')['object']['sha']
+          original=request('/git/commits/'+head)
+          child=request('/git/commits','POST',{'message':'Disposable archive actor proof','tree':original['tree']['sha'],'parents':[head]})['sha']
+          request('/git/refs/heads/v2-protected-main','PATCH',{'sha':child,'force':False},denied=True)
+          request('/git/refs/heads/v2-protected-archive','PATCH',{'sha':child,'force':False})
+          request('/git/refs/heads/v2-protected-archive','PATCH',{'sha':head,'force':True},denied=True)
+          request('/git/refs/heads/v2-protected-archive','DELETE',denied=True)
+          assert request('/git/ref/heads/v2-protected-archive')['object']['sha']==child
+          print('PASS: main update denied; archive fast-forward allowed; archive rewind and deletion denied')
