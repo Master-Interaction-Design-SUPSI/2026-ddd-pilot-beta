@@ -1,79 +1,187 @@
-# Share your group's work
+# Group repository: student guide
 
-This is your group's public GitHub repository. Your group edits the text and media here; the [main course repository](https://github.com/Master-Interaction-Design-SUPSI/2026-ddd-making-sense-of-data) collects registered groups' contributions and publishes them together on the course website.
+Your group's public repository. Your group edits text and media here. The [course repository](https://github.com/Master-Interaction-Design-SUPSI/2026-ddd-making-sense-of-data) imports them and publishes the course website.
 
-**Before you begin:** the course team will give you an invitation, your group identifier, and the website link. Publishing starts once they confirm the setup is ready. You need only a GitHub account and a browser. Anyone can read these files, so use material intended for public sharing.
+**WARNING**: Everything here is public. Upload only material cleared for publication.
 
-The supplied text and visual are a **demonstration with invented numbers**. Replace them with your work. Keep the repository name supplied by the course team. You can remove `media/example-detail.svg` when you also remove its reference from `text.md`.
+## 1. Prerequisites
 
-## 1. Write your text
+- GitHub account and browser. Nothing to install.
+- One repository per group. One member opens the [group template](https://github.com/Master-Interaction-Design-SUPSI/2026-ddd-pilot-beta) → **Use this template → Create a new repository**. Owner: your account. Visibility: **Public**. Then **Settings → Collaborators → Add people** for each teammate. Send the repository link to the course team.
+- From the course team: group identifier (slug), website link.
+- Publication starts when the course team confirms setup.
+- The supplied text, visual, `media.csv` and `media/example-*` files are demonstrations with invented numbers. Replace them. Delete a file only after removing its reference from `text.md`.
 
-Sign in to GitHub, accept the invitation from the course team, and open **your group's repository**. Check that the branch menu shows **main**.
+## 2. Files
 
-Open `text.md` and click the pencil icon. Replace the title, authors, and paragraphs with your own work. Keep the three dashes above and below the title and authors:
+| Path | Role | Rule |
+| --- | --- | --- |
+| `text.md` | Text | Required. Front matter: title, authors. |
+| `media.csv` | Media table | Required. First line `name,source,file`; one row per media file used in `text.md`. |
+| `visual.svg` | Main visual | Required unless the course team exempts your group. 1920 × 1080 SVG. |
+| `media/…` | Extra images, audio, video | Optional. Listed in `media.csv`, named in `text.md`. |
 
-```text
----
-title: Your project title
-authors: Your group members
----
+Everything else (this README, design sources, HTML, scripts) is ignored and never published.
 
-What question did you investigate?
+## 3. Edit text
 
-Explain what you found and how you worked with the data.
-```
+1. Sign in. Open your group's repository. Accept the invitation first if another student owns it. Branch menu: **main**.
+2. Open `text.md`; click the pencil icon.
+3. Replace title, authors and paragraphs. Keep both `---` lines:
 
-Choose **Commit changes**, select **Commit directly to the main branch**, and confirm. A commit is a saved change. You can edit the same file again whenever you need to make a correction.
+   ```text
+   ---
+   title: Your project title
+   authors: Your group members
+   ---
 
-If GitHub offers only a fork or a proposed change, check that you accepted the invitation and opened the correct repository. Ask the course team to check your access if direct saving is unavailable. GitHub's [editing guide](https://docs.github.com/en/repositories/working-with-files/managing-files/editing-files) shows the editor.
+   What question did you investigate?
 
-## 2. Upload your main visual
+   Explain what you found and how you worked with the data.
+   ```
 
-Prepare a **1920 × 1080 pixel** frame or artboard and export the whole frame as SVG. Name it **visual.svg**. Renaming a PNG or JPG file to `.svg` does not convert it.
+4. **Commit changes** → **Commit directly to the main branch** → confirm.
 
-At the top level of your group's repository, choose **Add file → Upload files**, select `visual.svg`, and commit directly to **main**. Uploading the same filename replaces the previous visual. Keep `text.md` and `visual.svg` together at the top level; you do not need to create a group folder inside this repository.
+GitHub offers only a fork or a proposed change: wrong repository, or invitation not accepted. Ask the course team to check your access. Reference: [GitHub editing guide](https://docs.github.com/en/repositories/working-with-files/managing-files/editing-files).
 
-The SVG should contain `viewBox="0 0 1920 1080"`. If it also specifies width and height, they must be 1920 and 1080 pixels. Keep only one main visual: remove any older `visual.png` or `visual.jpg` using **… → Delete file**, then commit to **main**.
+## 4. Upload main visual
 
-## 3. Check your entry
+1. Export the whole 1920 × 1080 px frame as SVG, named `visual.svg`. Renaming a PNG or JPG to `.svg` converts nothing.
+2. Repository root → **Add file → Upload files** → `visual.svg` → commit to **main**. The same name replaces the previous file.
+3. Required attribute: `viewBox="0 0 1920 1080"`. Width and height, if present: 1920 and 1080 px.
+4. One main visual only. Delete any `visual.png` or `visual.jpg`: **… → Delete file** → commit to **main**.
 
-After the course team has connected your repository and enabled publishing, valid changes appear automatically without content approval. The site checks for changes roughly every ten minutes, but updates can take longer. Open the website link supplied by the course team, find your title, and check your text, visual, and links.
+`text.md` and `visual.svg` stay at the root. No group folder.
 
-If an update does not appear, open [publication results](https://github.com/Master-Interaction-Design-SUPSI/2026-ddd-making-sense-of-data/actions/workflows/pages.yml), choose the latest completed run on **main**, and find **Course publication** in its summary. Use the group identifier supplied by the course team to find your row.
+## 5. Add media
 
-| Status | What it means |
+1. Open `media/` (or the root) → **Add file → Upload files** → commit to **main**.
+2. Add a row to `media.csv` at the root: the name you write in the text, the link to the original source, the file's exact path. Commit.
+
+   ```text
+   name,source,file
+   interview,https://archive.org/details/example-interview,media/interview.mp3
+   lithium mine,https://example.org/photo-of-the-mine,media/mine.jpg
+   ```
+
+3. Write the name in double brackets in `text.md`: `[[interview]]`, `[[lithium mine]]`. Commit. The file appears there; a click opens its source.
+4. To remove a file: delete its name from `text.md`, commit, then delete the file and its row.
+
+Commit in this order: media, `media.csv`, `text.md`. Each commit publishes on its own; this order keeps every one valid.
+
+`media.csv` is required, even without media: keep only its first line. Names: unique, case-insensitive, no `[`, `]` or `|`. Source: a full `https://` link, or empty for your own material. A spreadsheet can save it as **CSV UTF-8**; commas or semicolons both work. Typing in GitHub: put a value containing a comma in double quotes.
+
+Filenames: lowercase letters, digits, `.`, `_`, `-`. First character a letter or digit. No spaces. Example: `survey-photo.jpg`. References must match exactly, including case.
+
+| Class | Formats | Maximum |
+| --- | --- | --- |
+| Text | `text.md` | 256 KiB |
+| SVG | `.svg` | 5 MiB each |
+| Image | PNG, JPG/JPEG, WebP, GIF, AVIF | 20 MiB each |
+| Audio | MP3, M4A, WAV, OGG, AAC, FLAC | 20 MiB each |
+| Video | MP4, WebM, MOV | 20 MiB each |
+| Group | ≤ 100 files | 50 MiB total |
+
+SVG: static, self-contained. No scripts, links, animation or external files. Only the main visual must be 1920 × 1080; extra images keep their own dimensions.
+
+## 6. Check publication
+
+Valid commits publish automatically, without approval. The site refreshes every ten minutes; delivery can take longer.
+
+1. Open the website. Find your title. Check text, visual, links and media.
+2. Not updated: open [publication results](https://github.com/Master-Interaction-Design-SUPSI/2026-ddd-making-sense-of-data/actions/workflows/pages.yml) → latest completed run on **main** → summary **Course publication** → row with your group identifier.
+
+| Status | Meaning |
 | --- | --- |
-| `updated` | Your new files were selected for this publication. |
-| `unchanged` | The selected version is the same as before. |
-| `retained` | The update could not be used; your previous published version was kept. Read the explanation in your row. |
-| `skipped` | This group has no usable published version yet. Read the explanation, correct the files, and save again. |
-| `disabled` | Publication for this group has been turned off by the course team. |
+| `updated` | New version selected for this run. |
+| `unchanged` | Same version as before. |
+| `retained` | Update rejected; previous version kept. Read the explanation. |
+| `skipped` | No valid published version yet. Correct and commit again. |
+| `disabled`, `hidden`, `frozen` | Publication turned off or fixed by the course team. |
 
-A run marked **verified** confirms that its publication completed. **unchanged** means no new deployment was needed. If the overall result is failed, unverified, or still awaiting deployment, ask the course team to check it; an `updated` row alone does not confirm that your changes are online. If your group has no row, or there are no publication results yet, ask the course team to check the setup.
+Published = run marked **verified** or **unchanged**. `updated` alone proves nothing. Run failed, unverified or pending; no row; no runs: contact the course team.
 
-For an incorrect SVG size, export the whole 1920 × 1080 frame again. For a missing media file, upload it or correct its filename in `text.md`. Keep names and capital letters exactly the same. Commit the correction to **main**; a later refresh will try again. An invalid or incomplete update keeps the previous published entry when one exists.
-
-## Optional text and media
-
-These examples use the currently supported syntax:
-
-| Write in text.md | What a visitor can do |
+| Fault | Action |
 | --- | --- |
-| `*a few words*` | Read italic text. |
-| `[[the source\|https://example.org/data]]` | Open a link. Replace the example address with your source. |
-| `[[a detail\|A short explanation]]` | Click to reveal a note. |
-| `{crimson\|a key finding}` | Read those words in colour. |
-| `[[the sketch\|media/example-detail.svg]]` | Click to reveal the template's supporting image. |
+| Wrong SVG size | Re-export the whole 1920 × 1080 frame. |
+| Missing media | Upload the file, or correct its path in `media.csv` or `text.md`. Match case exactly. |
+| `media.csv` required | Create `media.csv` at the root; first line `name,source,file`. |
+| Not a name in `media.csv` | Add the row, or correct the name in `text.md`. |
+| No row in `media.csv` | Every media file used in `text.md` needs a row, also when referenced by path. |
+| Rejected update | Correct; commit to **main**. The next refresh retries. The previous version stays online meanwhile. |
 
-To add an extra image, audio clip, or video, open `media`, choose **Add file → Upload files**, and commit to **main**. If there is no `media` folder, you can upload the file beside `text.md` instead. Reference the exact path: `media/interview.mp3` for a file inside `media`, or `interview.mp3` for a file at the top level. For example, after uploading those files:
+## 7. Syntax
 
-```text
-[[Listen to the interview|media/interview.mp3]]
-[[Watch the recording|media/recording.mp4]]
-```
+Prose: line breaks and blank lines between paragraphs become spaces, forming one continuous justified passage. Two trailing spaces or a trailing backslash also become a space. Headings, lists, blockquotes and code blocks stay separate; code keeps its line breaks. Never break a URL or filename across lines.
 
-Media opens when the visitor clicks its annotation; audio and video provide playback controls. Preview your own files in the website, because playback depends on their encoding. Extra images keep their own dimensions: **only the main visual must be a 1920 × 1080 SVG**. Supplementary images may be SVG, PNG, JPG/JPEG, WebP, GIF, or AVIF.
+| Write in `text.md` | Result |
+| --- | --- |
+| `*Where and how is AI computation performed?*` | Research question: sans serif italic. |
+| `**Data centres**` | Keyword or key concept: sans serif bold. |
+| `{#116964\|Geology and ecology}` | Keyword or key concept: colored sans serif. |
+| `{underline\|Dataset XX}` | Data source: underlined sans serif. |
+| `[Dataset XX](https://example.org/data)` | Underlined data source; opens in a new tab. |
+| `[[a detail\|A short explanation]]` | Note: `{✶ A short explanation}`. |
+| `[[Parikka, 2015\|A geology of media\|type=bibliography]]` | Serif citation: `(■ Parikka, 2015. A geology of media)`. |
+| `[[Author, year. Title\|https://example.org/source\|type=bibliography]]` | Serif linked citation; underlined on hover; opens the source in a new tab. |
+| `[[a note\|More context\|type=note;color=green]]` | Green note. |
+| `[[a quotation\|Quoted words\|type=quote;style=italic;color=crimson]]` | Crimson italic quotation. |
+| `{crimson\|a key finding}` | Colored text. |
+| `[[interview]]` | Media named in `media.csv`: inline image, audio or video; a click opens its source. |
+| `[[the sketch\|media/example-detail.svg]]` | Inline image by path. The file still needs a row in `media.csv`. |
+| `![A description](media/example-tall.svg)` | Inline image (Markdown). Same rule. |
+| `[[a tone\|media/example-tone.mp3]]` | Inline audio by path. |
+| `[[a video\|media/example-motion.mp4]]` | Inline video by path. |
+| `[[a video\|media/example-motion.mp4\|source=https://example.org/original]]` | Video whose click opens this source instead of its `media.csv` source. Works for images and audio too. |
+| `[![A description](media/example-detail.svg)](https://example.org/original)` | Image linked to its original source. |
 
-Use lowercase filenames without spaces, such as `survey-photo.jpg`; letters, digits, dots, underscores, and hyphens are supported. Keep paths within your repository. A note cannot contain `|`, `[` or `]`. If you remove a media file, remove its reference from `text.md` too.
+Annotation form: `[[label|target|modifiers]]`. Modifiers are optional, separated by `;`, in any order.
 
-File limits are 256 KiB for text, 5 MiB per SVG, 20 MiB per other media file, and 100 files / 100 MiB in total. Supported audio: MP3, M4A, WAV, OGG, AAC, FLAC. Supported video: MP4, WebM, MOV. Export SVGs as static, self-contained artwork. Source/design files and README files are not included in your published entry.
+| Modifier | Values |
+| --- | --- |
+| `type` | `note`, `bibliography`, `quote` |
+| `style` | `italic`, `normal` |
+| `color` | `crimson` or any CSS color, e.g. `#116964` |
+| `source` | Original HTTP(S) source URL for an image, video or audio file. URLs with `;`, `\|`, `[` or `]` must encode those characters. |
+
+- Note: open by default; `{✶ text}`; normal sans serif. `style=italic` explicitly opts into italic. The label toggles it.
+- Citation (`type=bibliography`): inline serif, black, `(■ Author, year. Title)`. A URL target makes the whole citation a link to the original source. Black overrides every color. Text citations open by default; their label toggles the title.
+- Quote: quotation marks on reveal.
+- An explicit `color` overrides a surrounding `{color|…}` span; otherwise the span applies.
+- `{color|✶ text}` renders in braces.
+- Markdown `*italics*` works in prose and labels.
+- Two-field annotations and emoji markers in the third field still work.
+- Unknown, repeated or malformed modifiers stay visible as literal text. Correct them.
+- Never put `|`, `[` or `]` inside a field.
+
+## 8. Media behavior
+
+| Media | Behavior |
+| --- | --- |
+| Image | Inline thumbnail; aspect ratio kept. Hover or keyboard focus: enlarged preview. Click or tap: opens the original source in a new tab. |
+| Audio | Static player with a play symbol and label. Click or tap: opens the original source in a new tab. |
+| Video | Inline, muted and looping; starts when half visible. Hover: enlarged preview with sound, when the browser permits playback. Keyboard focus: muted preview. Click or tap: opens the original source in a new tab. |
+| External embed | Opens manually from its annotation. Fallback: **Open media on provider**. YouTube/Vimeo playback unverified. |
+
+Use `source=` or a linked Markdown image to specify the original source. Without a source link, clicking opens the published media file itself. Original files and their original sources may have different URLs.
+
+The course [media and sources worksheet](https://docs.google.com/spreadsheets/d/1WP-dlkyGFV2Ki1NTLo7auSYGrvrBxwdUBvVFZjOkV30/edit) is the working resource listed in *DDD-REPO-Commenti&Risorse.pdf*. Keep the source URL next to the matching media reference in `text.md`.
+- Playback stops off screen, on entry switch, while the main image is enlarged, and when the page is hidden.
+- Reduced motion: no autoplay, no preview animation.
+- Reduced motion leaves the video still. Browsers may refuse automatic playback or sound; the source link remains available.
+- Playback depends on file encoding and browser. Check your entry on the site.
+
+## 9. Editor (preview)
+
+Use only after the course team announces it. URL: website link + `editor/`.
+
+1. **Group** → **Open last published version**. New group: **Start from template**.
+2. Edit the Markdown. Attach files with their exact destination, e.g. `media/new-photo.png`, a name and a source link; the row goes into `media.csv`. **Insert in text** writes `[[name]]`.
+3. **Check and prepare GitHub steps**. Resolve every error.
+4. Execute the generated steps in order: compare current GitHub text, upload media, commit `media.csv`, commit `text.md`, delete removed files.
+5. Replacing referenced media: use a new filename.
+6. If shown, **Request publication** after all commits. Read the answer on the issue.
+
+Drafts are saved in this browser only. Restore brings back text and attachments together. Storage denied or full: the editor lists what was not saved; a text-only backup needs its media reattached or discarded. Saving unavailable: **Download text.md** before leaving.
+
+**WARNING**: A browser draft is not a commit. A completed checklist proves neither commit nor publication.
